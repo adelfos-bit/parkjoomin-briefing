@@ -1,0 +1,452 @@
+{
+  "date": "2026-04-04",
+  "analyzed_at": "2026-04-04T09:37:42.036048",
+  "news_stats": {
+    "date": "2026-04-04",
+    "total_articles": 278,
+    "parkjoomin_articles": 109,
+    "sentiment": {
+      "positive": 44,
+      "negative": 10,
+      "neutral": 55,
+      "pos_pct": 40,
+      "neg_pct": 9,
+      "neu_pct": 51
+    },
+    "comments": {
+      "total": 377,
+      "positive": 49,
+      "negative": 26,
+      "neutral": 302,
+      "pos_pct": 13,
+      "neg_pct": 7,
+      "neu_pct": 80
+    },
+    "candidate_exposure": {
+      "박주민": 109,
+      "오세훈": 118,
+      "우상호": 0,
+      "전현희": 87,
+      "정원오": 112,
+      "송영길": 0,
+      "김두관": 0
+    },
+    "top_keywords": [
+      [
+        "경선",
+        70
+      ],
+      [
+        "토론",
+        68
+      ],
+      [
+        "공약",
+        21
+      ],
+      [
+        "여론조사",
+        5
+      ],
+      [
+        "청년",
+        3
+      ],
+      [
+        "경제",
+        3
+      ],
+      [
+        "복지",
+        3
+      ],
+      [
+        "비전",
+        2
+      ],
+      [
+        "교통",
+        2
+      ],
+      [
+        "재개발",
+        1
+      ]
+    ],
+    "top_articles": [
+      {
+        "title": "서울시 공약 발표한 박주민 \"탄소중립·에너지 전환 도시 만들겠다\"",
+        "description": "더불어민주당 박주민 서울시장 경선후보가 3일 서울 여의도 국회에서 기자회견을 하고 있다. 더퍼블릭",
+        "link": "https://www.thepublic.kr/news/articleView.html?idxno=299870",
+        "originallink": "https://www.thepublic.kr/news/articleView.html?idxno=299870",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 0,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 0,
+          "top_comments": []
+        }
+      },
+      {
+        "title": "[6.3 지방선거 D-60] 광역단체장 대진표 윤곽…'전면전' 본격화, 수도권...",
+        "description": "서울은 민주당이 정원오·박주민·전현희 등 다자 구도를 형성한 가운데, 국민의힘은 오세훈 현 시장과 박수민·윤희숙 등이 경쟁하는 구조다. 여기에 김정철 혁신위원장까지 거론되며 변수도 적지 않다. 현직 시장... ",
+        "link": "http://www.newsian.co.kr/news/articleView.html?idxno=88087",
+        "originallink": "http://www.newsian.co.kr/news/articleView.html?idxno=88087",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "오세훈",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 0,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 0,
+          "top_comments": []
+        }
+      },
+      {
+        "title": "박주민“결선 보내달라” 전현희“난 검증 마쳐”...정원오 집중 견제",
+        "description": "더불어민주당 서울시장 예비후보 2차 토론회에서도 전현희·박주민 후보(기호순)가 부동산 정책 공약 등을... 본선에서 확실히 이기려면 지금보다 더 치열하게 검증해야 한다”며 “본경선에서 박주민을 선택해야 결선이... ",
+        "link": "https://n.news.naver.com/mnews/article/011/0004607007?sid=100",
+        "originallink": "https://www.sedaily.com/article/20028216?ref=naver",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 3,
+          "positive": 0,
+          "negative": 1,
+          "neutral": 2,
+          "pos_pct": 0,
+          "top_comments": [
+            {
+              "text": "진격의주민 박주민 가즈아!",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T08:44:59+0900"
+            },
+            {
+              "text": "아첨꾼 세파리\n그중 옥은 전현희\n세번만 전현희 해 보면 저 ㄴ 이",
+              "likes": 1,
+              "dislikes": 0,
+              "date": "2026-04-04T07:25:15+0900"
+            },
+            {
+              "text": "칸쿤 간놈이 후보되고 장동혁이 사퇴후 불출마 선언하면 오세훈이 해볼만합니다 장동혁 때문에 이지경인걸 보수의 배신자 장동혁 만 모를까?",
+              "likes": 2,
+              "dislikes": 0,
+              "date": "2026-04-04T07:10:15+0900"
+            }
+          ]
+        }
+      },
+      {
+        "title": "부동산 민심 노리는 與 서울시장 후보들…본경선 앞두고 공약 대격돌",
+        "description": "與 후보군, 방점은 공공 개발…주택 공급 방법은 제각각 본경선을 앞둔 민주당 서울시장 후보군(박주민... 박주민 의원은 민간 정비 사업 기간 단축에 공공 주도 공급을 확대하는 ‘투트랙’ 전략을 내세우고 있다. 시민... ",
+        "link": "https://www.kukinews.com/article/view/kuk202604030172",
+        "originallink": "https://www.kukinews.com/article/view/kuk202604030172",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 0,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 0,
+          "top_comments": []
+        }
+      },
+      {
+        "title": "따뜻한 날씨와 성큼 다가온 봄...벚꽃 만개한 여의도, 이번 주말 절정! ...",
+        "description": "더불어민주당 서울시장 후보자 본경선 합동토론회 더불어민주당 정원오(왼쪽부터), 전현희, 박주민 서울시장 예비후보가 31일 서울 마포구 상암동 MBC 신사옥에서 열린 더불어민주당 서울시장 후보자 본경선... ",
+        "link": "https://n.news.naver.com/mnews/article/119/0003076993?sid=162",
+        "originallink": "https://www.dailian.co.kr/news/view/1629332/?sc=Naver",
+        "pubDate": "2026-04-04",
+        "sentiment": "중립",
+        "pos_pct": 0,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 0,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 0,
+          "top_comments": []
+        }
+      },
+      {
+        "title": "민주당 서울시장 후보들, 부동산 공약 격돌",
+        "description": "박주민 후보는 정 후보의 '공공임대주택 2만3천 호 공급' 공약을 언급하며 오세훈 서울시장이 약속한 2026년 공공임대 총량이 2만4천 호가 넘는다며 임기 4년에 걸쳐 이보다 적은 양을 공급하겠다는 거냐고 지적했습니다.... ",
+        "link": "https://n.news.naver.com/mnews/article/052/0002336217?sid=100",
+        "originallink": "https://www.ytn.co.kr/_ln/0101_202604040014339638",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "오세훈"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 1,
+          "positive": 1,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 100,
+          "top_comments": [
+            {
+              "text": "뻔뻔해야 민주당하나? 내로남불해야 민주당하나? 양심이 썩어야 민주당하나? 우리동네 전부 이재명 욕하던데… 지지율은 조작",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T00:54:50+0900"
+            }
+          ]
+        }
+      },
+      {
+        "title": "'명심' 업은 정원오에 전현희·박주민 '파상공세'…민주당 서울시장 토...",
+        "description": "더불어민주당 서울시장 후보 선출을 위한 마지막 TV토론회에서 전현희·박주민 예비후보가 유력 주자인... 전현희·박주민·정원오(기호순) 예비후보는 3일 오후 서울 여의도 KBS에서 열린 2차 합동 토론회에서 6·3 지방선거... ",
+        "link": "https://n.news.naver.com/mnews/article/119/0003076989?sid=100",
+        "originallink": "https://www.dailian.co.kr/news/view/1629558/?sc=Naver",
+        "pubDate": "2026-04-04",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 20,
+          "positive": 0,
+          "negative": 2,
+          "neutral": 18,
+          "pos_pct": 0,
+          "top_comments": [
+            {
+              "text": "주민아 너도 여직원하고 출장다녀 와야 경쟁이 되는 거다. 아 저녀니는 남직원하고 다녀와. 민주당 DNA를 원오만 지녔네. ㅉ ㅉ",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T09:08:16+0900"
+            },
+            {
+              "text": "도긴개긴...누가 더 저질인지 싸움하냐 ㅋㅋㅋ",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T09:00:20+0900"
+            },
+            {
+              "text": "어쨌든 일잘하는 정원오가 낫고 김어준, 국힘이 가짜뉴스 네거티브로 11명이 다같이 한버스로 다닌 연수로 난리치는거보면 어디에도 휘둘리지않고 잘할사람인듯",
+              "likes": 1,
+              "dislikes": 3,
+              "date": "2026-04-04T08:51:16+0900"
+            },
+            {
+              "text": "야권은 정원오를 원하지~~공격하기 가장 쉬운 상대~~",
+              "likes": 2,
+              "dislikes": 1,
+              "date": "2026-04-04T08:39:53+0900"
+            },
+            {
+              "text": "명심 업은 정원오?? 더불어 민주적으로 리틀 찢죄명?",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T08:36:35+0900"
+            }
+          ]
+        }
+      },
+      {
+        "title": "김부겸 '박정희 마케팅'…서울시장 마지막 토론",
+        "description": "<박주민 / 더불어민주당 서울시장 예비후보> \"정원오 후보님이 갖고 있는 부동산 철학이라든지, 정책적 방향이 민주당과 좀 다르고 오세훈 시장에 비교해도 좀 약한 것 아니냐…\" <전현희 / 더불어민주당 서울시장 예비후보... ",
+        "link": "https://n.news.naver.com/mnews/article/422/0000851386?sid=100",
+        "originallink": "http://www.yonhapnewstv.co.kr/MYH20260403230639e5k",
+        "pubDate": "2026-04-03",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "오세훈",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 6,
+          "positive": 1,
+          "negative": 0,
+          "neutral": 5,
+          "pos_pct": 17,
+          "top_comments": [
+            {
+              "text": "다카키 마사오 친일매국노 독립군 떼려잡은 놈 뭐 그리 대단하다고 찾아다녀?",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T08:50:25+0900"
+            },
+            {
+              "text": "이승만과박정희를 부정하는 더불어민주당의 대구시장 입후보자 김부겸이 표를 달라고 대구에서 박정희 찬양론을 외치는 소동이 일어났다 김부겸이 진정으로 그런 생각을 했다면 더불어민주당은 이승만 박정희 전두환전대통령을 대한민국의 정통 통치자로 먼저 인정하는 성명서부터 발표해야한다",
+              "likes": 1,
+              "dislikes": 0,
+              "date": "2026-04-04T06:55:51+0900"
+            },
+            {
+              "text": "좌 우를 따지지 말고 실용을 따져라.이념은 인간의 행복한 삶을 실현하기위해 있는것,굳이 고집할 필요는 없다.환경과 시대적 여건을 고려하여 다수의 국민에게 행복을 줄 수있는것이 최선이다.자본가는 노동자를 착취하지 않고,노동자는 자본가를 핍박하지않는 균형있는 정책집행이 정부의 책임이다.",
+              "likes": 1,
+              "dislikes": 0,
+              "date": "2026-04-04T06:13:07+0900"
+            },
+            {
+              "text": "박닭은 이제 민주당한테도 이용당하네",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T03:52:53+0900"
+            },
+            {
+              "text": "박정희 마케팅이라니..  좌파가 변했다는 얘기?",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-04T03:40:58+0900"
+            }
+          ]
+        }
+      },
+      {
+        "title": "전현희·정원오·박주민, 서울시장 본경선 2차 토론서 부동산·행정 역량...",
+        "description": "정원오, 박주민 세 예비후보가 3일 오후 여의도 KBS 스튜디오에서 열린 2차 합동토론회에서 정책 검증을... 박주민 후보 역시 해당 공약이 이재명 대통령의 공공 중심 철학과 배치되는 것 아니냐며 공세에 가세했습니다.... ",
+        "link": "http://www.paxetv.com/news/articleView.html?idxno=268406",
+        "originallink": "http://www.paxetv.com/news/articleView.html?idxno=268406",
+        "pubDate": "2026-04-03",
+        "sentiment": "긍정",
+        "pos_pct": 100,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 0,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 0,
+          "pos_pct": 0,
+          "top_comments": []
+        }
+      },
+      {
+        "title": "박주민 \"결선 만들어야\" 전현희 \"준비된 후보\" 정원오 \"승리로 보답\"",
+        "description": "박주민 의원은 이날 KBS 주관으로 열린 2차 경선 합동토론회를 마친 뒤 페이스북에 \"단도직입적으로... 본경선 투표에서 박주민을 선택해달라\"고 했다. 전현희 의원은 이날 페이스북에서 \"이제는 선택의 시간\"이라며... ",
+        "link": "https://n.news.naver.com/mnews/article/421/0008869748?sid=100",
+        "originallink": "https://www.news1.kr/politics/assembly/6125200",
+        "pubDate": "2026-04-03",
+        "sentiment": "중립",
+        "pos_pct": 0,
+        "neg_pct": 0,
+        "candidates_mentioned": [
+          "박주민",
+          "전현희",
+          "정원오"
+        ],
+        "is_parkjoomin": true,
+        "comments": {
+          "count": 1,
+          "positive": 0,
+          "negative": 0,
+          "neutral": 1,
+          "pos_pct": 0,
+          "top_comments": [
+            {
+              "text": "미스터 칸쿤정 땜에 성동구청은 공문서 조작건으로 특별감사 받아야지 싶다",
+              "likes": 0,
+              "dislikes": 0,
+              "date": "2026-04-03T23:21:28+0900"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "trends": {
+    "article_change": 0,
+    "sentiment_change": 0,
+    "comment_change": 0,
+    "alert_level": "normal",
+    "alerts": []
+  },
+  "social_summary": {
+    "youtube": {
+      "status": "수집완료",
+      "count": 20
+    },
+    "twitter": {
+      "status": "수집완료",
+      "count": 25
+    },
+    "community": {
+      "status": "수집완료",
+      "count": 40
+    },
+    "naver_comments": {
+      "status": "수집완료",
+      "count": 0
+    }
+  },
+  "ai_strategy": null,
+  "fallback_strategy": {
+    "core_diagnosis": "중립적 여론 상황 (긍정 40%/부정 9%)입니다. 적극적 의제 선점으로 여론 주도권을 확보할 필요가 있습니다.",
+    "top_priority": "차별화된 정책 의제 발굴 및 미디어 노출 확대",
+    "actions": [
+      "[긴급] 주요 현안 관련 논평/기자회견 기획",
+      "[중요] SNS 콘텐츠 다양화 (숏폼/카드뉴스/라이브)",
+      "[전략] 핵심 지지층 네트워크 확대 — 시민단체/직능단체 접촉"
+    ],
+    "risks": [],
+    "opportunities": [
+      "'서울시 공약 발표한 박주민 \"탄소중립·에너지 전환 도시...' 호응 → 추가 콘텐츠 기회"
+    ],
+    "competitor_analysis": "오세훈 미디어 노출 118건으로 가장 활발. 대응 포인트 점검 필요.",
+    "tomorrow_focus": "내일 뉴스 트렌드 변화 및 경쟁자 공약 발표 모니터링"
+  }
+}
