@@ -1,7 +1,7 @@
 {
   "meta": {
     "date": "2026-04-04",
-    "collected_at": "2026-04-04T09:37:34.879389"
+    "collected_at": "2026-04-04T10:01:49.620016"
   },
   "channels": {
     "youtube": {
@@ -14,10 +14,16 @@
             "channel": "무삭제 神점집",
             "published": "2026-04-03T23:00:15Z",
             "url": "https://youtube.com/watch?v=HdULTk6B44w",
-            "views": 135,
-            "likes": 14,
-            "comment_count": 0,
-            "top_comments": []
+            "views": 192,
+            "likes": 18,
+            "comment_count": 1,
+            "top_comments": [
+              {
+                "text": "서울시장은 정원오",
+                "likes": 0,
+                "date": "2026-04-04T00:59:50Z"
+              }
+            ]
           },
           {
             "title": "정원오 돌풍에 박주민·전현희 총공격!​#서울시장선거, #민주당경선, #정원오돌풍, #박주민, #전현희, #오세훈, #결선투표, #지방선거변수",
@@ -34,10 +40,15 @@
             "channel": "사주스타",
             "published": "2026-04-03T14:00:54Z",
             "url": "https://youtube.com/watch?v=bzEQGcchUgc",
-            "views": 12,
-            "likes": 5,
-            "comment_count": 1,
+            "views": 13,
+            "likes": 6,
+            "comment_count": 2,
             "top_comments": [
+              {
+                "text": "잘 준비 하셔야 할듯 싶네요  힘내주세요",
+                "likes": 0,
+                "date": "2026-04-04T00:42:39Z"
+              },
               {
                 "text": "적을 동지로~",
                 "likes": 0,
@@ -50,14 +61,19 @@
             "channel": "꾼홀딩스",
             "published": "2026-04-03T11:30:06Z",
             "url": "https://youtube.com/watch?v=NqWeo1rhyiE",
-            "views": 1650,
+            "views": 1683,
             "likes": 128,
-            "comment_count": 3,
+            "comment_count": 4,
             "top_comments": [
               {
                 "text": "잘 보셨어요 무조건 정원오가 됩니다. 사실 제가 정원오 지지선언했기 때문입니다.",
                 "likes": 2,
                 "date": "2026-04-03T22:38:21Z"
+              },
+              {
+                "text": "정원오됩니다",
+                "likes": 1,
+                "date": "2026-04-04T00:37:47Z"
               },
               {
                 "text": "박상용 검사 사주 의뢰합니다. 조작수사 논란 이유로 때문에 이유 알고 싶어요.",
@@ -122,9 +138,9 @@
             "channel": "KBS News",
             "published": "2026-04-03T09:21:38Z",
             "url": "https://youtube.com/watch?v=AJas3DgdpNg",
-            "views": 6557,
-            "likes": 107,
-            "comment_count": 99,
+            "views": 6622,
+            "likes": 109,
+            "comment_count": 101,
             "top_comments": [
               {
                 "text": "토론 태도나 내용, 정책 모든 걸 다 봐도 박주민이 압도적이다.",
@@ -147,9 +163,9 @@
                 "date": "2026-04-03T17:59:24Z"
               },
               {
-                "text": "정무감각!<br>시장은 행정능력은 기본이고 정치적 해결능력이 요구되는 자리임<br>좀 더 숙성되야겠다는 생각이다!<br><br>이번에는 박주민!",
-                "likes": 2,
-                "date": "2026-04-03T21:49:44Z"
+                "text": "정책의 밀도가 박주민이 훨씬 높아보인다. 박주민 화이팅!",
+                "likes": 25,
+                "date": "2026-04-03T11:04:34Z"
               }
             ]
           },
@@ -202,12 +218,22 @@
             ]
           },
           {
+            "title": "절실함이 드러난 인생샷 #박주민 #강성필 #헬마라이브",
+            "channel": "세모다_세상의모든이슈를다루다",
+            "published": "2026-04-04T01:00:18Z",
+            "url": "https://youtube.com/watch?v=9lU_n4vFAfE",
+            "views": 0,
+            "likes": 0,
+            "comment_count": 0,
+            "top_comments": []
+          },
+          {
             "title": "무섭게 치고 올라오는 박주민",
             "channel": "정법전TV",
             "published": "2026-04-03T23:15:02Z",
             "url": "https://youtube.com/watch?v=oRs5byOq8co",
-            "views": 3041,
-            "likes": 101,
+            "views": 3537,
+            "likes": 131,
             "comment_count": 2,
             "top_comments": [
               {
@@ -227,10 +253,16 @@
             "channel": "무삭제 神점집",
             "published": "2026-04-03T23:00:15Z",
             "url": "https://youtube.com/watch?v=HdULTk6B44w",
-            "views": 135,
-            "likes": 14,
-            "comment_count": 0,
-            "top_comments": []
+            "views": 193,
+            "likes": 18,
+            "comment_count": 1,
+            "top_comments": [
+              {
+                "text": "서울시장은 정원오",
+                "likes": 0,
+                "date": "2026-04-04T00:59:50Z"
+              }
+            ]
           },
           {
             "title": "정원오 돌풍에 박주민·전현희 총공격!​#서울시장선거, #민주당경선, #정원오돌풍, #박주민, #전현희, #오세훈, #결선투표, #지방선거변수",
@@ -247,33 +279,33 @@
             "channel": "영상으로 보는 세상",
             "published": "2026-04-03T15:00:44Z",
             "url": "https://youtube.com/watch?v=TWA-HP_ujlg",
-            "views": 4208,
-            "likes": 375,
-            "comment_count": 32,
+            "views": 4577,
+            "likes": 389,
+            "comment_count": 36,
             "top_comments": [
               {
                 "text": "지혼자 월세전환 세올리고 다음날 임대차3법 발의. 사악한 인간. 너때문에 이사도 못가고 온식구가 좁은집에서 치를 떨었다",
-                "likes": 66,
+                "likes": 70,
                 "date": "2026-04-03T15:24:02Z"
               },
               {
                 "text": "아니 어차피 부정선거로 민주당이 다 당선 되는거 확정 아니냐???<br>선거 투표  뭐하러 하나??",
-                "likes": 42,
+                "likes": 44,
                 "date": "2026-04-03T17:03:12Z"
               },
               {
                 "text": "칸쿤은 둘만 가지 않았냐? <br>어디 11명이 다 같이 간 것처럼 구라치고 자빠졌냐?",
-                "likes": 41,
+                "likes": 43,
                 "date": "2026-04-03T16:32:37Z"
               },
               {
                 "text": "그놈이그놈이다",
-                "likes": 44,
+                "likes": 45,
                 "date": "2026-04-03T16:15:57Z"
               },
               {
                 "text": "임대차 3법 시행 직전에 지 건물 보증금 내리고 월세 올린 거지갑이 할 말은 아니지 않냐",
-                "likes": 23,
+                "likes": 24,
                 "date": "2026-04-03T17:10:56Z"
               }
             ]
@@ -283,10 +315,15 @@
             "channel": "사주스타",
             "published": "2026-04-03T14:00:54Z",
             "url": "https://youtube.com/watch?v=bzEQGcchUgc",
-            "views": 12,
-            "likes": 5,
-            "comment_count": 1,
+            "views": 13,
+            "likes": 7,
+            "comment_count": 2,
             "top_comments": [
+              {
+                "text": "잘 준비 하셔야 할듯 싶네요  힘내주세요",
+                "likes": 0,
+                "date": "2026-04-04T00:42:39Z"
+              },
               {
                 "text": "적을 동지로~",
                 "likes": 0,
@@ -309,9 +346,9 @@
             "channel": "박주민TV",
             "published": "2026-04-03T12:47:06Z",
             "url": "https://youtube.com/watch?v=q7gFQRi5tVM",
-            "views": 3358,
-            "likes": 533,
-            "comment_count": 28,
+            "views": 3436,
+            "likes": 547,
+            "comment_count": 30,
             "top_comments": [
               {
                 "text": "압도적으로 선택  합시다<br>서울시장 박주민 으로.. 합시다",
@@ -345,7 +382,7 @@
             "channel": "김용민의원, 민트TV",
             "published": "2026-04-03T12:35:18Z",
             "url": "https://youtube.com/watch?v=kD3D39w3924",
-            "views": 6172,
+            "views": 6180,
             "likes": 1618,
             "comment_count": 16,
             "top_comments": [
@@ -385,46 +422,10 @@
             "likes": 15,
             "comment_count": 0,
             "top_comments": []
-          },
-          {
-            "title": "[LIVE] 바람직한 검찰개혁을 위한 시민간담회 (with. 박주민 의원, 이지은 전) 총경)",
-            "channel": "김용민의원, 민트TV",
-            "published": "2026-04-03T11:56:48Z",
-            "url": "https://youtube.com/watch?v=LEVqm_5AJ4s",
-            "views": 3440,
-            "likes": 894,
-            "comment_count": 6,
-            "top_comments": [
-              {
-                "text": "이지은님 응원합니다❤❤❤",
-                "likes": 7,
-                "date": "2026-04-03T11:24:09Z"
-              },
-              {
-                "text": "우리 의원님들 감사합니다.😊",
-                "likes": 6,
-                "date": "2026-04-03T11:35:58Z"
-              },
-              {
-                "text": "바람직한 검찰개혁을 위한 뜻깊은 시민간담회 👍박주민후보 🫶🏻김용민의원🫶🏻이지은의원🫶🏻검찰개혁이 끝까지 잘 완수되도록 국민과 소통하는 멋진 세분 응원합니당♥♡⌒ー⌒♡♥",
-                "likes": 3,
-                "date": "2026-04-03T12:59:24Z"
-              },
-              {
-                "text": "<a href=\"https://www.youtube.com/live/kD3D39w3924?si=gXqQblQL4aOBEF_M\">https://www.youtube.com/live/kD3D39w3924?si=gXqQblQL4aOBEF_M</a>",
-                "likes": 6,
-                "date": "2026-04-03T11:26:16Z"
-              },
-              {
-                "text": "아휴 영상장비 안좋다고 싫어요 누르지 맙시다",
-                "likes": 3,
-                "date": "2026-04-03T11:22:54Z"
-              }
-            ]
           }
         ],
-        "total_views": 36533,
-        "total_comments": 96
+        "total_views": 34259,
+        "total_comments": 95
       }
     },
     "twitter": {

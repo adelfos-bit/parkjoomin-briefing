@@ -235,40 +235,53 @@ def generate_fallback_strategy(news_data, trends):
         "tomorrow_focus": "",
     }
 
-    # 상황별 진단
+    # 키워드 감지
+    keywords = [kw for kw, _ in stats.get("top_keywords", [])]
+    pj_count = stats.get("parkjoomin_articles", 0)
+    total = stats.get("total_articles", 0)
+    exposure = stats.get("candidate_exposure", {})
+    top_comp = max([(k, v) for k, v in exposure.items() if k != "박주민"], key=lambda x: x[1], default=("오세훈", 0))
+
+    # 상황별 진단 (다층 분석)
     if neg_pct > 40:
+        neg_title = negative_articles[0]['title'][:30] if negative_articles else "부정 기사"
         strategy["core_diagnosis"] = (
-            f"부정 여론이 {neg_pct}%로 경고 수준입니다. "
-            f"부정 기사 {len(negative_articles)}건이 확인되며, 적극적 대응이 필요합니다."
+            f"🔴 위기 상황. 부정 여론 {neg_pct}%로 경고 수준. "
+            f"'{neg_title}' 등 부정 기사 {len(negative_articles)}건 확인. 즉시 대응 필요."
         )
-        strategy["top_priority"] = "부정 여론 확산 차단 및 해명 콘텐츠 즉시 배포"
-        strategy["actions"] = [
-            "[긴급] 부정 기사 관련 공식 입장문/해명 영상 제작",
-            "[중요] 지지층 결집 메시지 SNS 집중 배포",
-            "[전략] 정책 비전 재정립 — 긍정 의제 선점",
-        ]
+        strategy["top_priority"] = "부정 여론 확산 차단 — 해명 콘텐츠 3시간 내 배포"
+    elif neg_pct > 25:
+        strategy["core_diagnosis"] = (
+            f"⚠️ 주의 필요. 부정 {neg_pct}%로 상승세. "
+            f"부정 기사 {len(negative_articles)}건 모니터링 중. 선제 대응이 확산을 막는 열쇠."
+        )
+        strategy["top_priority"] = "부정 이슈 확산 전 선제 해명 + 긍정 의제 투입"
     elif pos_pct > 60:
+        pos_title = positive_articles[0]['title'][:25] if positive_articles else "긍정 기사"
         strategy["core_diagnosis"] = (
-            f"긍정 여론 {pos_pct}%로 양호한 흐름입니다. "
-            f"이 모멘텀을 유지하며 부동층 공략을 강화할 시점입니다."
+            f"✅ 긍정 흐름 {pos_pct}%. '{pos_title}' 등 호응. "
+            f"모멘텀 유지하며 부동층 공략 강화할 적기."
         )
-        strategy["top_priority"] = "긍정 흐름 유지 + 부동층 타겟 콘텐츠 확대"
-        strategy["actions"] = [
-            "[긴급] 호응 받은 정책 관련 후속 콘텐츠 제작",
-            "[중요] 부동층 대상 비교 콘텐츠 (vs 오세훈) 준비",
-            "[전략] 지지율 상승 시나리오별 경선 전략 점검",
-        ]
+        strategy["top_priority"] = "긍정 모멘텀 극대화 — 후속 콘텐츠 + 부동층 타겟"
+    elif "경선" in keywords or "토론" in keywords:
+        strategy["core_diagnosis"] = (
+            f"📊 경선/토론 국면. 기사 {pj_count}건 중 경선·토론 키워드 집중. "
+            f"당내 경쟁 속 차별화 메시지가 핵심. {top_comp[0]} {top_comp[1]}건 노출 중."
+        )
+        strategy["top_priority"] = "경선 토론 차별화 — 정책 비전 1~2개에 집중"
+    elif "공약" in keywords or "부동산" in keywords or "주거" in keywords:
+        strategy["core_diagnosis"] = (
+            f"📋 정책 경쟁 국면. 공약/부동산/주거 관련 보도 집중. "
+            f"구체적 수치와 실행력으로 차별화해야 함."
+        )
+        strategy["top_priority"] = "핵심 공약 숏폼 콘텐츠 — 경쟁자 대비 구체성 강조"
     else:
         strategy["core_diagnosis"] = (
-            f"중립적 여론 상황 (긍정 {pos_pct}%/부정 {neg_pct}%)입니다. "
-            f"적극적 의제 선점으로 여론 주도권을 확보할 필요가 있습니다."
+            f"📊 보합세. 긍정 {pos_pct}%/부정 {neg_pct}%. "
+            f"박주민 {pj_count}건 vs {top_comp[0]} {top_comp[1]}건. "
+            f"적극적 의제 선점으로 여론 주도권 확보 필요."
         )
-        strategy["top_priority"] = "차별화된 정책 의제 발굴 및 미디어 노출 확대"
-        strategy["actions"] = [
-            "[긴급] 주요 현안 관련 논평/기자회견 기획",
-            "[중요] SNS 콘텐츠 다양화 (숏폼/카드뉴스/라이브)",
-            "[전략] 핵심 지지층 네트워크 확대 — 시민단체/직능단체 접촉",
-        ]
+        strategy["top_priority"] = "차별화 의제 발굴 + 미디어 노출 확대"
 
     # 위기/기회
     if negative_articles:

@@ -252,6 +252,18 @@ def collect_all_news(target_date):
             if not is_relevant:
                 continue
 
+            # 무관 기사 필터링 (선거와 무관한 기사 제거)
+            IRRELEVANT_WORDS = [
+                "벚꽃", "날씨", "기온", "꽃놀이", "미세먼지", "황사",
+                "스포츠", "야구", "축구", "농구", "프로야구",
+                "연예", "드라마", "영화", "아이돌", "콘서트",
+                "맛집", "여행", "관광", "축제",
+            ]
+            if not any(name in full_text for name in CANDIDATE_NAMES):
+                # 후보 이름이 없으면서 무관 키워드가 있으면 제거
+                if any(iw in full_text for iw in IRRELEVANT_WORDS):
+                    continue
+
             # 감성분석
             sentiment, pos_pct, neg_pct = analyze_sentiment(full_text)
 
