@@ -1,0 +1,96 @@
+name: 박주민 일일 브리핑
+
+on:
+  schedule:
+    # UTC 23:30 = KST 08:30 (수집+분석 후 09:00 발송)
+    - cron: '30 23 * * *'
+  workflow_dispatch:
+    inputs:
+      date:
+        description: '수집 날짜 (YYYY-MM-DD)'
+        required: false
+        default: ''
+
+jobs:
+  daily-briefing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml anthropic
+
+      - name: Calculate date (KST)
+        id: date
+        run: |
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            echo "TARGET_DATE=${{ github.event.inputs.date }}" >> $GITHUB_OUTPUT
+          else
+            TARGET_DATE=$(TZ='Asia/Seoul' date '+%Y-%m-%d')
+            echo "TARGET_DATE=$TARGET_DATE" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Collect News
+        env:
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+        run: |
+          cd parkjoomin_briefing
+          python scripts/collect_news.py --date ${{ steps.date.outputs.TARGET_DATE }}
+
+      - name: Collect Social
+        env:
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        run: |
+          cd parkjoomin_briefing
+          python scripts/collect_social.py --date ${{ steps.date.outputs.TARGET_DATE }}
+
+      - name: Analyze Strategy
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          cd parkjoomin_briefing
+          python scripts/analyze_strategy.py --date ${{ steps.date.outputs.TARGET_DATE }}
+
+      - name: Generate Briefing
+        run: |
+          cd parkjoomin_briefing
+          python scripts/generate_briefing.py --date ${{ steps.date.outputs.TARGET_DATE }}
+
+      - name: Send Telegram
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          cd parkjoomin_briefing
+          python scripts/send_telegram.py --send-only --date ${{ steps.date.outputs.TARGET_DATE }}
+
+      - name: Save data artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: briefing-${{ steps.date.outputs.TARGET_DATE }}
+          path: |
+            parkjoomin_briefing/data/news_daily/
+            parkjoomin_briefing/data/social_daily/
+            parkjoomin_briefing/data/strategy_daily/
+            parkjoomin_briefing/data/briefing_archive/
+          retention-days: 30
+
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add parkjoomin_briefing/data/
+          git diff --staged --quiet || git commit -m "chore: 일일 브리핑 데이터 ${{ steps.date.outputs.TARGET_DATE }}"
+          git push || echo "Push failed, will retry next run"
