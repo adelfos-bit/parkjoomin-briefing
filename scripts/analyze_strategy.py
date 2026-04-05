@@ -2,7 +2,7 @@
 """박주민 서울시장 후보 — 정책전문가 전략 분석 엔진
 Claude API를 활용한 일일 전략 브리핑 생성"""
 
-import os, sys, json, argparse
+import os, sys, json, argparse, requests
 from datetime import datetime, timedelta
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -124,55 +124,76 @@ def build_strategy_prompt(news_data, social_data, trends, target_date):
     exposure = stats.get("candidate_exposure", {})
     exposure_text = ", ".join([f"{k}: {v}건" for k, v in sorted(exposure.items(), key=lambda x: -x[1])])
 
-    prompt = f"""당신은 대한민국 선거 전문 정치컨설턴트이자 데이터 사이언티스트입니다.
-아래는 2026년 서울시장 선거 후보 '박주민'에 대한 {target_date} 일일 수집 데이터입니다.
+    # 부정 기사 리스트
+    neg_articles = [a for a in articles if a.get("sentiment") == "부정" and a.get("is_parkjoomin")]
+    neg_text = "\n".join([f"  - [{a['sentiment']}] {a['title']}" for a in neg_articles[:5]]) or "없음"
 
-## 오늘의 데이터 요약
+    # 경쟁자별 부정 기사 (공격 포인트)
+    comp_weaknesses = ""
+    for comp_name in ["오세훈", "정원오", "전현희"]:
+        comp_neg = [a for a in articles if a.get("sentiment") == "부정" and comp_name in a.get("candidates_mentioned", [])]
+        if comp_neg:
+            comp_weaknesses += f"\n  {comp_name} 약점 기사: {comp_neg[0]['title']}"
 
-### 뉴스 현황
-- 전체 관련 기사: {stats.get('total_articles', 0)}건
-- 박주민 직접 언급: {stats.get('parkjoomin_articles', 0)}건
-- 감성 분포: 긍정 {stats.get('sentiment', {}).get('pos_pct', 0)}% / 부정 {stats.get('sentiment', {}).get('neg_pct', 0)}% / 중립 {stats.get('sentiment', {}).get('neu_pct', 0)}%
-- 전일 대비: 기사 {trends.get('article_change', 0):+d}건, 긍정률 {trends.get('sentiment_change', 0):+d}%p
-- 댓글 반응: 총 {stats.get('comments', {}).get('total', 0)}건 (긍정 {stats.get('comments', {}).get('pos_pct', 0)}%)
+    d_day = (datetime(2026, 6, 3) - datetime.strptime(target_date, '%Y-%m-%d')).days
 
-### 주요 기사 TOP 10
+    prompt = f"""당신은 박주민 서울시장 후보 캠프의 수석 전략참모입니다.
+당신의 유일한 목표는 박주민의 당선입니다. 아래 오늘({target_date}, D-{d_day}) 수집 데이터를 분석해서 박주민 캠프에 전략 지시를 내려주세요.
+
+## 오늘의 데이터
+
+### 박주민 현황
+- 기사 {stats.get('parkjoomin_articles', 0)}건 / 전체 {stats.get('total_articles', 0)}건
+- 감성: 긍정 {stats.get('sentiment', {}).get('pos_pct', 0)}% / 부정 {stats.get('sentiment', {}).get('neg_pct', 0)}%
+- 댓글 {stats.get('comments', {}).get('total', 0)}건: 👍{stats.get('comments', {}).get('pos_pct', 0)}% 👎{stats.get('comments', {}).get('neg_pct', 0)}%
+- 전일 대비: 기사 {trends.get('article_change', 0):+d}건, 감성 {trends.get('sentiment_change', 0):+d}%p
+
+### 박주민 관련 주요 기사 (감성 태그 포함)
 {top_articles_text}
+
+### 박주민 부정 기사 (위기 모니터링)
+{neg_text}
+
+### 경쟁자 미디어 노출 (위협도 순)
+{exposure_text}
+
+### 경쟁자 약점 (공격 포인트)
+{comp_weaknesses if comp_weaknesses else "오늘 탐지된 약점 없음"}
 
 ### SNS 반응
 {social_summary}
 
-### 급상승 키워드
+### 트렌드 키워드
 {keywords_text}
-
-### 경쟁자 미디어 노출
-{exposure_text}
-
-### 위기 알림
-경보 수준: {trends.get('alert_level', 'normal')}
-{chr(10).join(trends.get('alerts', ['없음']))}
 
 ---
 
-위 데이터를 기반으로 아래 형식에 맞춰 일일 전략 브리핑을 작성해주세요:
+아래 형식으로 **박주민 캠프 전략 지시서**를 작성하세요. 텔레그램 메시지로 전송되므로 간결하게 핵심만 작성하세요.
 
-1. **오늘의 핵심 진단** (2-3문장): 박주민 후보의 오늘 미디어/여론 상황을 정책전문가 관점에서 진단
+━━━ 핵심 진단 ━━━
+(2-3문장. 오늘 박주민에게 가장 중요한 상황 판단. 수치 기반.)
 
-2. **최우선 과제** (1가지): 오늘 가장 시급하게 대응해야 할 것
+🎯 핵심 미션
+"(한 문장. 오늘 박주민이 집중해야 할 것)"
 
-3. **실행 액션 3가지**: 구체적이고 실행 가능한 액션
-   - [긴급] 24시간 내 실행
-   - [중요] 이번 주 내 실행
-   - [전략] 중장기 포석
+✅ 즉시 실행
+⚡ (긴급 — 오늘 안에. 구체적으로 "무엇을" "어떻게")
+📋 (중요 — 이번 주. 구체적 콘텐츠/행동)
+🎯 (전략 — 경쟁자 대응. 누구를 어떻게)
 
-4. **위기/기회 알림**: 현재 감지된 위기와 기회 각 1-2개
+⚡ 위기/기회
+🔴 위기: (구체적 기사/이슈 기반)
+🟢 기회: (활용 가능한 포인트)
 
-5. **경쟁자 동향 분석**: 오세훈 등 주요 경쟁자의 움직임과 대응 방향
+🔮 내일 주목
+(내일 모니터링해야 할 것 1-2개)
 
-6. **내일 주목 포인트**: 내일 주의 깊게 봐야 할 것
-
-반드시 데이터에 기반해서 분석하고, 추상적 제안이 아닌 구체적 실행 방안을 제시하세요.
-한국어로 작성하세요."""
+주의사항:
+- "SNS 콘텐츠 다양화" 같은 뻔한 말 금지. 구체적 행동만.
+- 경쟁자 약점이 있으면 활용 방법 제시
+- 댓글 부정률이 높으면 왜 부정인지 분석하고 대응 방향 제시
+- 모든 제안은 "박주민이 오늘/이번주 실행 가능한 것"이어야 함
+- 800자 이내로 작성"""
 
     return prompt
 
