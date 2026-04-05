@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""박주민 서울시장 후보 — 텔레그램 브리핑 메시지 생성기 (v2 대폭 개선)"""
+"""박주민 캠프 일일 전략 보고서 — 텔레그램 브리핑 v3 (박주민 전용)"""
 
 import os, sys, json, argparse
 from datetime import datetime
@@ -8,363 +8,370 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(SCRIPT_DIR)
 
 WEEKDAYS = ["월", "화", "수", "목", "금", "토", "일"]
-ELECTION_DATE = datetime(2026, 6, 3)  # 6.3 지방선거
+ELECTION_DATE = datetime(2026, 6, 3)
 
-def bar(value, max_val=100, length=15):
+def bar(value, max_val=100, length=10):
     filled = int(value / max_val * length) if max_val > 0 else 0
-    filled = min(filled, length)
-    return "█" * filled + "░" * (length - filled)
+    return "█" * min(filled, length) + "░" * (length - min(filled, length))
 
-def trend_arrow(change):
-    if change > 0:
-        return f"+{change} ▲"
-    elif change < 0:
-        return f"{change} ▼"
-    return "→"
-
-def format_number(n):
-    if n >= 10000:
-        return f"{n/10000:.1f}만"
-    elif n >= 1000:
-        return f"{n:,}"
+def fmt(n):
+    if n >= 10000: return f"{n/10000:.1f}만"
+    if n >= 1000: return f"{n:,}"
     return str(n)
 
-# ──────────────────── 헤더 + D-day ────────────────────
-def generate_header(target_date):
-    dt = datetime.strptime(target_date, '%Y-%m-%d')
-    weekday = WEEKDAYS[dt.weekday()]
-    d_day = (ELECTION_DATE - dt).days
+def delta(change):
+    if change > 0: return f"+{change}▲"
+    if change < 0: return f"{change}▼"
+    return "→"
 
+# ═══════════════════════════════════════════════════
+#  헤더
+# ═══════════════════════════════════════════════════
+def section_header(target_date):
+    dt = datetime.strptime(target_date, '%Y-%m-%d')
+    d = (ELECTION_DATE - dt).days
     return f"""━━━━━━━━━━━━━━━━━━━━━━━━━
-📅 {target_date} ({weekday}) 박주민 일일 브리핑
-🗳️ 6.3 지방선거 D-{d_day}
+📅 {target_date} ({WEEKDAYS[dt.weekday()]})
+🔵 박주민 일일 전략 보고서
+🗳️ 6.3 지방선거 D-{d}
 ━━━━━━━━━━━━━━━━━━━━━━━━━"""
 
-# ──────────────────── 섹션1: 현황 대시보드 ────────────────────
-def generate_section1_dashboard(stats, trends):
-    sentiment = stats.get("sentiment", {})
-    pos = sentiment.get("pos_pct", 0)
-    neg = sentiment.get("neg_pct", 0)
-    neu = sentiment.get("neu_pct", 0)
-    comments = stats.get("comments", {})
-    exposure = stats.get("candidate_exposure", {})
+# ═══════════════════════════════════════════════════
+#  1. 오늘의 박주민
+# ═══════════════════════════════════════════════════
+def section_today(stats, trends):
+    s = stats.get("sentiment", {})
+    pos, neg = s.get("pos_pct", 0), s.get("neg_pct", 0)
+    c = stats.get("comments", {})
+    c_total, c_pos, c_neg = c.get("total", 0), c.get("pos_pct", 0), c.get("neg_pct", 0)
+    pj = stats.get("parkjoomin_articles", 0)
+    total = stats.get("total_articles", 0)
 
-    sentiment_change = trends.get("sentiment_change", 0)
-
-    # 경쟁 구도 — 0건 후보 자동 숨김
-    sorted_candidates = sorted(exposure.items(), key=lambda x: -x[1])
-    active_candidates = [(name, count) for name, count in sorted_candidates if count > 0]
-
-    competition_text = ""
-    max_count = active_candidates[0][1] if active_candidates else 1
-    pj_rank = 0
-    for i, (name, count) in enumerate(active_candidates[:6], 1):
-        if name == "박주민":
-            emoji = "🔵"
-            pj_rank = i
-        else:
-            emoji = "⚪"
-        cbar = bar(count, max_count, 10)
-        competition_text += f"  {i}위 {emoji}{name} {cbar} {count}건\n"
-
-    # 댓글 감성
-    c_total = comments.get('total', 0)
-    c_pos = comments.get('pos_pct', 0)
-    c_neg = comments.get('neg_pct', 0)
-    c_neu = comments.get('neu_pct', 0)
-
-    alert_emoji = {"normal": "🟢", "warning": "🟡", "critical": "🔴"}.get(
-        trends.get("alert_level", "normal"), "🟢"
-    )
-    alert_text = chr(10).join('  ⚠️ ' + a for a in trends.get('alerts', []))
+    # 종합 점수 (간이)
+    score = min(100, int(pos * 0.4 + (100 - neg) * 0.3 + min(pj, 100) * 0.3))
 
     return f"""
-📊 【1. 현황 대시보드】
+📊 【1. 오늘의 박주민】
 
-🔥 기사 감성
-  {bar(pos)} 긍정 {pos}%
-  긍정 {pos}% | 부정 {neg}% | 중립 {neu}%
-  전일 대비: {trend_arrow(sentiment_change)}
+  📈 종합지수 {score}/100  {bar(score)}
+  ┌─────────────────────────
+  │ 기사  {pj}건 ({delta(trends.get('article_change', 0))})
+  │ 댓글  {fmt(c_total)}건
+  │ 감성  긍정{pos}% {bar(pos)}
+  │       부정{neg}% {bar(neg)}
+  │ 댓글  👍{c_pos}% 👎{c_neg}% {bar(c_pos)}
+  └─────────────────────────"""
 
-📰 미디어 노출
-  전체 {stats.get('total_articles', 0)}건 | 박주민 {stats.get('parkjoomin_articles', 0)}건 ({trend_arrow(trends.get('article_change', 0))})
+# ═══════════════════════════════════════════════════
+#  2. 박주민 핵심 뉴스
+# ═══════════════════════════════════════════════════
+def section_news(stats, all_articles):
+    # 박주민 기사만 + 댓글 많은 순
+    pj = [a for a in all_articles if a.get("is_parkjoomin")]
+    pj.sort(key=lambda x: x.get("comments", {}).get("count", 0), reverse=True)
 
-💬 댓글 ({format_number(c_total)}건)
-  {bar(c_pos)} 👍{c_pos}% 👎{c_neg}% 중립{c_neu}%
-
-🏆 미디어 경쟁 (박주민 {pj_rank}위)
-{competition_text}
-{alert_emoji} {trends.get('alert_level', 'normal').upper()}{(' | ' + alert_text.strip()) if alert_text.strip() else ''}"""
-
-# ──────────────────── 섹션2: 주요 뉴스 + 경쟁자 동향 ────────────────────
-def generate_section2_news(stats, all_articles):
-    # 박주민 관련 TOP 5 (댓글 있는 기사 우선)
-    pj_articles = [a for a in stats.get("top_articles", []) if a.get("is_parkjoomin")]
-    # 댓글 있는 기사를 앞으로
-    pj_articles.sort(key=lambda x: x.get("comments", {}).get("count", 0), reverse=True)
-    top5 = pj_articles[:5]
-
-    news_text = ""
-    for i, art in enumerate(top5, 1):
+    text = "\n📰 【2. 박주민 핵심 뉴스】\n"
+    for i, art in enumerate(pj[:5], 1):
         emoji = {"긍정": "😊", "부정": "😟", "중립": "🔵"}.get(art.get("sentiment", "중립"), "🔵")
-        c = art.get("comments", {})
-        c_count = c.get('count', 0)
-        if c_count > 0:
-            c_pos = c.get('pos_pct', 0)
-            c_neg = 100 - c_pos - c.get('neu_pct', 0) if c_count > 0 else 0
-            comment_str = f"💬{c_count}건 👍{c_pos}% 👎{c_neg}%"
+        cc = art.get("comments", {}).get("count", 0)
+        if cc > 0:
+            cp = art["comments"].get("pos_pct", 0)
+            cn = art["comments"].get("neg_pct", 0)
+            cstr = f" 💬{cc}건 👍{cp}%👎{cn}%"
         else:
-            comment_str = ""
-        news_text += f"  {i}. [{art['sentiment']}{emoji}] {art['title'][:45]}\n"
-        if comment_str:
-            news_text += f"     {comment_str}\n"
+            cstr = ""
+        text += f"  {i}. {emoji} {art['title'][:42]}{cstr}\n"
 
-    # 경쟁자 TOP 뉴스 (후보별 최신 1건)
-    competitor_text = ""
-    competitors = ["오세훈", "정원오", "전현희", "우상호", "송영길", "김두관"]
-    for comp in competitors:
-        comp_articles = [a for a in all_articles if comp in a.get("candidates_mentioned", []) and not a.get("is_parkjoomin")]
-        if comp_articles:
-            top = comp_articles[0]
-            competitor_text += f"  ▸ {comp}: {top['title'][:40]}\n"
+    return text
 
-    section = f"""
-📰 【2. 박주민 주요 뉴스】
-{news_text}"""
+# ═══════════════════════════════════════════════════
+#  3. 경쟁자 위협 분석 (핵심 변경!)
+# ═══════════════════════════════════════════════════
+def section_competitors(stats, all_articles):
+    exposure = stats.get("candidate_exposure", {})
+    pj_count = exposure.get("박주민", 0)
 
-    if competitor_text:
-        section += f"""
-🔍 경쟁자 동향
-{competitor_text}"""
+    # 경쟁자를 위협도 순으로 (노출 많은 순, 0건 제외)
+    competitors = []
+    for name, count in exposure.items():
+        if name == "박주민" or count == 0:
+            continue
+        competitors.append((name, count))
+    competitors.sort(key=lambda x: -x[1])
 
-    return section
+    if not competitors:
+        return "\n🔍 【3. 경쟁자】\n  오늘 경쟁자 노출 없음\n"
 
-# ──────────────────── 섹션3: 키워드 + SNS ────────────────────
-def generate_section3_trends_social(stats, social_data):
-    keywords = stats.get("top_keywords", [])
-    kw_text = " | ".join([f"#{kw}({count})" for kw, count in keywords[:7]])
+    # 경선 vs 본선 구분
+    민주 = ["정원오", "전현희", "우상호", "송영길", "김두관"]
+    국힘 = ["오세훈"]
 
+    text = "\n🔍 【3. 경쟁자 위협 분석】\n"
+
+    for name, count in competitors[:4]:
+        gap = count - pj_count
+        if gap > 0:
+            gap_str = f"박주민보다 +{gap}건"
+        elif gap < 0:
+            gap_str = f"박주민보다 {gap}건"
+        else:
+            gap_str = "박주민과 동률"
+
+        # 경선/본선 라벨
+        if name in 국힘:
+            label = "본선 상대"
+        elif name in 민주:
+            label = "경선 경쟁"
+        else:
+            label = "기타"
+
+        # 해당 경쟁자 TOP 기사 1건 (박주민과 무관한 기사)
+        comp_articles = [a for a in all_articles
+                        if name in a.get("candidates_mentioned", [])
+                        and not a.get("is_parkjoomin")]
+        if not comp_articles:
+            comp_articles = [a for a in all_articles
+                           if name in a.get("candidates_mentioned", [])]
+
+        news_title = comp_articles[0]["title"][:35] if comp_articles else "관련 기사 없음"
+
+        # 부정 기사 찾기 → 공격 포인트
+        comp_neg = [a for a in comp_articles if a.get("sentiment") == "부정"]
+        if comp_neg:
+            attack = f"💡 약점: \"{comp_neg[0]['title'][:30]}\""
+        else:
+            attack = ""
+
+        # 위협도 바 (박주민 대비)
+        threat_pct = min(100, int(count / max(pj_count, 1) * 100))
+        threat_bar = bar(threat_pct)
+
+        text += f"\n  ⚔️ {name} [{label}]\n"
+        text += f"    위협도 {threat_bar} {count}건 ({gap_str})\n"
+        text += f"    📰 \"{news_title}\"\n"
+        if attack:
+            text += f"    {attack}\n"
+
+    return text
+
+# ═══════════════════════════════════════════════════
+#  4. 오늘의 전략 지시
+# ═══════════════════════════════════════════════════
+def section_strategy(strategy_data, stats, all_articles):
+    ai = strategy_data.get("ai_strategy")
+    if ai:
+        lines = ai.strip().split('\n')
+        return "\n🧠 【4. 오늘의 전략 지시】\n\n" + '\n'.join(lines[:45])
+
+    # ── Fallback 전략 (데이터 기반) ──
+    exposure = stats.get("candidate_exposure", {})
+    pj_count = exposure.get("박주민", 0)
+    s = stats.get("sentiment", {})
+    pos, neg = s.get("pos_pct", 0), s.get("neg_pct", 0)
+    c = stats.get("comments", {})
+    keywords = [kw for kw, _ in stats.get("top_keywords", [])]
+
+    # 경쟁자 위협 1위
+    top_threat = max(
+        [(k, v) for k, v in exposure.items() if k != "박주민" and v > 0],
+        key=lambda x: x[1], default=("없음", 0)
+    )
+
+    # 박주민 부정/긍정 기사
+    pj_neg = [a for a in all_articles if a.get("sentiment") == "부정" and a.get("is_parkjoomin")]
+    pj_pos = [a for a in all_articles if a.get("sentiment") == "긍정" and a.get("is_parkjoomin")]
+
+    # ── 핵심 미션 (상황별) ──
+    if neg > 30:
+        mission = f"부정 여론({neg}%) 긴급 방어 — 해명 콘텐츠 즉시 배포"
+    elif "경선" in keywords or "토론" in keywords:
+        if top_threat[0] in ["정원오", "전현희"]:
+            mission = f"경선 토론에서 {top_threat[0]}과 차별화 — 정책 구체성으로 승부"
+        else:
+            mission = "경선 토론 차별화 — 핵심 정책 비전 1~2개 집중"
+    elif "공약" in keywords or "부동산" in keywords:
+        mission = "공약 경쟁 주도 — 구체적 수치와 실행력으로 차별화"
+    elif pos > 60:
+        mission = "긍정 모멘텀 극대화 — 후속 콘텐츠 + 부동층 공략"
+    else:
+        mission = f"의제 선점으로 {top_threat[0]}({top_threat[1]}건) 추격"
+
+    # ── 즉시 실행 (오늘 데이터 기반) ──
+    actions = []
+
+    # 액션1: 가장 긴급한 것
+    if pj_neg:
+        actions.append(f"⚡ \"{pj_neg[0]['title'][:25]}\" 관련 입장 정리/반박")
+    elif "토론" in keywords:
+        actions.append("⚡ 토론 하이라이트 숏폼 → 유튜브/인스타 즉시 배포")
+    else:
+        actions.append("⚡ 오늘 뉴스 사이클 대응 논평 SNS 배포")
+
+    # 액션2: 공약/콘텐츠
+    if pj_pos:
+        actions.append(f"📋 \"{pj_pos[0]['title'][:25]}\" 후속 카드뉴스 제작")
+    elif "공약" in keywords:
+        actions.append("📋 공약 비교 콘텐츠 — 경쟁자 대비 차별점 시각화")
+    else:
+        actions.append("📋 이번 주 핵심 이슈 선점 콘텐츠 기획")
+
+    # 액션3: 경쟁자 대응
+    comp_neg = [a for a in all_articles if a.get("sentiment") == "부정"
+                and top_threat[0] in a.get("candidates_mentioned", [])
+                and not a.get("is_parkjoomin")]
+    if comp_neg:
+        actions.append(f"🎯 {top_threat[0]} 약점 \"{comp_neg[0]['title'][:20]}\" 활용 대비")
+    elif top_threat[1] > pj_count:
+        actions.append(f"🎯 {top_threat[0]}({top_threat[1]}건) 미디어 추격 — 인터뷰/기고 기획")
+    else:
+        actions.append("🎯 지지층 결집 메시지 + 부동층 타겟 비교 콘텐츠")
+
+    actions_text = "\n".join(f"  {a}" for a in actions)
+
+    # ── 위기/기회 ──
+    risk = ""
+    if pj_neg:
+        c_info = pj_neg[0].get("comments", {})
+        if c_info.get("count", 0) > 0:
+            risk = f"  🔴 \"{pj_neg[0]['title'][:30]}\" 댓글 부정{c_info.get('neg_pct',0)}% — 확산 주의"
+        else:
+            risk = f"  🔴 \"{pj_neg[0]['title'][:30]}\" — 모니터링 필요"
+    elif c.get("neg_pct", 0) > 30:
+        risk = f"  🔴 댓글 부정률 {c['neg_pct']}% — 여론 반전 주의"
+    else:
+        risk = "  🔴 특별한 위기 없음"
+
+    if pj_pos:
+        opp = f"  🟢 \"{pj_pos[0]['title'][:30]}\" → 후속 콘텐츠 적기"
+    else:
+        opp = "  🟢 긍정 기사 부족 → 의제 선점 콘텐츠 필요"
+
+    return f"""
+🧠 【4. 오늘의 전략 지시】
+
+  🎯 핵심 미션
+  "{mission}"
+
+  ✅ 즉시 실행
+{actions_text}
+
+  ⚡ 위기/기회
+{risk}
+{opp}"""
+
+# ═══════════════════════════════════════════════════
+#  5. SNS 전황
+# ═══════════════════════════════════════════════════
+def section_sns(social_data, stats=None):
     channels = social_data.get("channels", {})
-    social_lines = []
+    lines = []
+
+    # 키워드 트렌드 (stats에서)
+    if stats:
+        keywords = stats.get("top_keywords", [])
+        if keywords:
+            kw_text = " ".join([f"#{kw}({c})" for kw, c in keywords[:5]])
+            lines.append(f"  🔑 {kw_text}")
 
     if "youtube" in channels:
         yt = channels["youtube"]["data"]
         videos = yt.get("videos", [])
         if videos:
-            social_lines.append(f"  ▶️ 유튜브 {len(videos)}건, 조회 {format_number(yt.get('total_views', 0))}회")
-            # 인기 영상 1개
-            top_vid = max(videos, key=lambda v: v.get("views", 0))
-            social_lines.append(f"     🔥 \"{top_vid['title'][:35]}\" ({format_number(top_vid['views'])}회)")
+            top = max(videos, key=lambda v: v.get("views", 0))
+            lines.append(f"  ▶️ 유튜브 {len(videos)}건 | 🔥 \"{top['title'][:30]}\" {fmt(top['views'])}회")
 
     if "twitter_sns" in channels:
         tw = channels["twitter_sns"]["data"]
-        x_count = tw.get('x_count', 0)
-        total = tw.get('total', 0)
-        if total > 0:
-            social_lines.append(f"  🐦 X {x_count}건 + SNS 언급 {total - x_count}건")
-    elif "twitter" in channels:
-        tw = channels["twitter"]["data"]
-        if tw.get('total', 0) > 0:
-            social_lines.append(f"  🐦 X(트위터) {tw['total']}건")
+        if tw.get("total", 0) > 0:
+            lines.append(f"  🐦 X {tw.get('x_count',0)}건 + SNS {tw['total'] - tw.get('x_count',0)}건")
 
     if "community" in channels:
         cm = channels["community"]["data"]
-        if cm.get('total', 0) > 0:
-            social_lines.append(f"  🗣️ 커뮤니티 {cm['total']}건")
+        if cm.get("total", 0) > 0:
+            lines.append(f"  🗣️ 커뮤니티 {cm['total']}건")
 
-    social_text = "\n".join(social_lines) if social_lines else "  수집 데이터 없음"
+    if not lines:
+        return ""
 
-    return f"""
-📈 【3. 키워드 & SNS】
-  {kw_text}
+    return "\n📱 【5. SNS 전황】\n" + "\n".join(lines)
 
-📱 SNS 반응
-{social_text}"""
-
-# ──────────────────── 섹션4: 전략 (핵심) ────────────────────
-def generate_section4_strategy(strategy_data, stats, all_articles):
-    # AI 전략
-    ai = strategy_data.get("ai_strategy")
-    if ai:
-        lines = ai.strip().split('\n')
-        truncated = '\n'.join(lines[:45])
-        return f"""
-🧠 【4. 정책전문가 전략】
-
-{truncated}"""
-
-    # Fallback — 고도화 버전
-    fb = strategy_data.get("fallback_strategy", {})
-    if not fb:
-        return "\n🧠 【4. 전략】\n  데이터 부족"
-
-    # 경쟁자별 핵심 동향 파악
-    exposure = stats.get("candidate_exposure", {})
-    pj_count = exposure.get("박주민", 0)
-    top_comp_name, top_comp_count = "오세훈", 0
-    for name, count in exposure.items():
-        if name != "박주민" and count > top_comp_count:
-            top_comp_name, top_comp_count = name, count
-
-    # 노출 격차 분석
-    gap = top_comp_count - pj_count
-    if gap > 20:
-        gap_analysis = f"⚠️ {top_comp_name} 대비 {gap}건 뒤처짐 — 미디어 노출 강화 시급"
-    elif gap > 0:
-        gap_analysis = f"📊 {top_comp_name}과 {gap}건 차이 — 추격 가능 범위"
-    elif gap == 0:
-        gap_analysis = f"📊 {top_comp_name}과 동률 — 모멘텀 확보가 관건"
-    else:
-        gap_analysis = f"✅ {top_comp_name} 대비 {-gap}건 앞서는 중 — 흐름 유지"
-
-    # 부정 기사 탐지 → 구체적 위기
-    neg_articles = [a for a in all_articles if a.get("sentiment") == "부정" and a.get("is_parkjoomin")]
-    pos_articles = [a for a in all_articles if a.get("sentiment") == "긍정" and a.get("is_parkjoomin")]
-
-    risk_text = ""
-    if neg_articles:
-        top_neg = neg_articles[0]
-        risk_text = f"  🔴 \"{top_neg['title'][:35]}\" — 부정 확산 주의"
-    else:
-        risk_text = "  🔴 현재 특별한 위기 없음"
-
-    opp_text = ""
-    if pos_articles:
-        top_pos = pos_articles[0]
-        opp_text = f"  🟢 \"{top_pos['title'][:35]}\" — 후속 콘텐츠 기회"
-    else:
-        opp_text = "  🟢 긍정 기사 부족 — 의제 선점 필요"
-
-    # 키워드 기반 구체적 액션
-    keywords = [kw for kw, _ in stats.get("top_keywords", [])]
-    if "경선" in keywords or "토론" in keywords:
-        action1 = "[긴급] 경선 토론 준비 — 핵심 차별화 메시지 3개 정리"
-    elif neg_articles:
-        action1 = f"[긴급] \"{neg_articles[0]['title'][:20]}...\" 관련 해명/입장 정리"
-    else:
-        action1 = "[긴급] 오늘 뉴스 사이클 대응 — 논평/SNS 콘텐츠 배포"
-
-    if "공약" in keywords or "정책" in keywords:
-        action2 = "[중요] 공약 후속 콘텐츠 — 카드뉴스/숏폼 제작 배포"
-    elif "부동산" in keywords or "주거" in keywords:
-        action2 = "[중요] 부동산/주거 정책 비교표 — 오세훈 대비 차별점 부각"
-    else:
-        action2 = "[중요] 이번 주 핵심 이슈 선점 콘텐츠 기획"
-
-    if pj_count < top_comp_count:
-        action3 = f"[전략] 미디어 노출 강화 — {top_comp_name}({top_comp_count}건) 추격 필요"
-    else:
-        action3 = "[전략] 지지층 결집 + 부동층 공략 — 비교 콘텐츠 강화"
-
-    return f"""
-🧠 【4. 정책전문가 전략】
-
-━━━ 핵심 진단 ━━━
-{fb.get('core_diagnosis', '')}
-{gap_analysis}
-
-🎯 최우선: {fb.get('top_priority', '')}
-
-✅ 오늘의 액션
-  {action1}
-  {action2}
-  {action3}
-
-⚡ 위기/기회
-{risk_text}
-{opp_text}
-
-🏁 {top_comp_name} 동향: 노출 {top_comp_count}건"""
-
-# ──────────────────── 푸터 ────────────────────
-def generate_footer(target_date):
+# ═══════════════════════════════════════════════════
+#  푸터
+# ═══════════════════════════════════════════════════
+def section_footer(target_date):
     dt = datetime.strptime(target_date, '%Y-%m-%d')
-    d_day = (ELECTION_DATE - dt).days
+    d = (ELECTION_DATE - dt).days
     return f"""
 ━━━━━━━━━━━━━━━━━━━━━━━━━
-🤖 자동생성 | {datetime.now().strftime('%H:%M')} 기준
-🗳️ D-{d_day} | 정책전문가 + 데이터사이언티스트 분석
+🗳️ D-{d} | 박주민 캠프 전략실
 ━━━━━━━━━━━━━━━━━━━━━━━━━"""
 
-# ──────────────────── 전체 생성 ────────────────────
+# ═══════════════════════════════════════════════════
+#  전체 조립
+# ═══════════════════════════════════════════════════
 def generate_full_briefing(target_date):
     strategy_path = os.path.join(BASE_DIR, "data", "strategy_daily", f"{target_date}.json")
     news_path = os.path.join(BASE_DIR, "data", "news_daily", f"{target_date}.json")
     social_path = os.path.join(BASE_DIR, "data", "social_daily", f"{target_date}.json")
 
-    strategy_data = {}
-    news_data = {}
-    social_data = {}
-
+    strategy_data, news_data, social_data = {}, {}, {}
     for path, target in [(strategy_path, "strategy"), (news_path, "news"), (social_path, "social")]:
         if os.path.exists(path):
             with open(path, 'r', encoding='utf-8') as f:
-                if target == "strategy":
-                    strategy_data = json.load(f)
-                elif target == "news":
-                    news_data = json.load(f)
-                else:
-                    social_data = json.load(f)
+                d = json.load(f)
+                if target == "strategy": strategy_data = d
+                elif target == "news": news_data = d
+                else: social_data = d
 
     stats = news_data.get("stats", strategy_data.get("news_stats", {}))
     trends = strategy_data.get("trends", {})
-    all_articles = news_data.get("articles", [])
+    articles = news_data.get("articles", [])
 
-    header = generate_header(target_date)
-    s1 = generate_section1_dashboard(stats, trends)
-    s2 = generate_section2_news(stats, all_articles)
-    s3 = generate_section3_trends_social(stats, social_data)
-    s4 = generate_section4_strategy(strategy_data, stats, all_articles)
-    footer = generate_footer(target_date)
+    parts = [
+        section_header(target_date),
+        section_today(stats, trends),
+        section_news(stats, articles),
+        section_competitors(stats, articles),
+        section_strategy(strategy_data, stats, articles),
+        section_sns(social_data, stats),
+        section_footer(target_date),
+    ]
 
-    full_message = header + s1 + s2 + s3 + s4 + footer
-
-    messages = split_telegram_message(full_message)
+    full = "".join(p for p in parts if p)
+    messages = split_message(full)
 
     archive_dir = os.path.join(BASE_DIR, "data", "briefing_archive")
     os.makedirs(archive_dir, exist_ok=True)
-    archive_path = os.path.join(archive_dir, f"{target_date}.json")
-    with open(archive_path, 'w', encoding='utf-8') as f:
-        json.dump({
-            "date": target_date,
-            "generated_at": datetime.now().isoformat(),
-            "messages": messages,
-            "full_text": full_message,
-        }, f, ensure_ascii=False, indent=2)
+    with open(os.path.join(archive_dir, f"{target_date}.json"), 'w', encoding='utf-8') as f:
+        json.dump({"date": target_date, "generated_at": datetime.now().isoformat(),
+                    "messages": messages, "full_text": full}, f, ensure_ascii=False, indent=2)
 
-    print(f"[OK] 브리핑 생성 완료 — {len(messages)}개 메시지, 총 {len(full_message)}자")
+    print(f"[OK] 브리핑 생성 완료 — {len(messages)}개 메시지, 총 {len(full)}자")
     return messages
 
-def split_telegram_message(text, max_length=4000):
-    if len(text) <= max_length:
+def split_message(text, limit=4000):
+    if len(text) <= limit:
         return [text]
-    messages = []
-    sections = text.split("\n\n")
-    current = ""
-    for section in sections:
-        if len(current) + len(section) + 2 > max_length:
-            if current:
-                messages.append(current.strip())
-            current = section
+    msgs, cur = [], ""
+    for sec in text.split("\n\n"):
+        if len(cur) + len(sec) + 2 > limit:
+            if cur: msgs.append(cur.strip())
+            cur = sec
         else:
-            current += "\n\n" + section if current else section
-    if current.strip():
-        messages.append(current.strip())
-    if len(messages) > 1:
-        for i in range(len(messages)):
-            messages[i] = f"[{i+1}/{len(messages)}]\n{messages[i]}"
-    return messages
+            cur += "\n\n" + sec if cur else sec
+    if cur.strip(): msgs.append(cur.strip())
+    if len(msgs) > 1:
+        msgs = [f"[{i+1}/{len(msgs)}]\n{m}" for i, m in enumerate(msgs)]
+    return msgs
 
 def main():
-    parser = argparse.ArgumentParser(description="박주민 브리핑 생성기")
+    parser = argparse.ArgumentParser()
     parser.add_argument("--date", default=datetime.now().strftime('%Y-%m-%d'))
     args = parser.parse_args()
     print(f"[START] 브리핑 생성 — {args.date}")
-    messages = generate_full_briefing(args.date)
-    for i, msg in enumerate(messages):
-        print(f"\n{'='*50}")
-        print(f"메시지 {i+1}/{len(messages)}:")
-        print(msg)
+    msgs = generate_full_briefing(args.date)
+    for i, m in enumerate(msgs):
+        print(f"\n{'='*50}\n메시지 {i+1}/{len(msgs)}:\n{m}")
     print(f"\n[DONE] 브리핑 생성 완료")
 
 if __name__ == "__main__":
